@@ -1,4 +1,4 @@
-package com.suprtek.taxiiclients;
+package ruhnke.taxiiclients;
 
 import java.io.IOException;
 import java.net.URI;
@@ -13,8 +13,8 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.mitre.taxii.client.HttpClient;
-import org.mitre.taxii.messages.xml11.DiscoveryRequest;
-import org.mitre.taxii.messages.xml11.DiscoveryResponse;
+import org.mitre.taxii.messages.xml11.CollectionInformationRequest;
+import org.mitre.taxii.messages.xml11.CollectionInformationResponse;
 import org.mitre.taxii.messages.xml11.MessageHelper;
 import org.mitre.taxii.messages.xml11.StatusMessage;
 
@@ -22,8 +22,8 @@ import org.mitre.taxii.messages.xml11.StatusMessage;
  *
  * @author jruhnke
  */
-public class DiscoveryClient extends AbstractClient {
-    
+public class CollectionInformationClient extends AbstractClient {
+
     public static void main(String[] args) {
         // Create a client that uses basic authentication (user & password).
         HttpClientBuilder cb = HttpClientBuilder.create();
@@ -38,29 +38,29 @@ public class DiscoveryClient extends AbstractClient {
         HttpClient taxiiClient = new HttpClient(httpClient);
 
         // Prepare the message to send.
-        DiscoveryRequest request = factory.createDiscoveryRequest().withMessageId(MessageHelper.generateMessageId());
-        
+        CollectionInformationRequest request = factory.createCollectionInformationRequest().withMessageId(MessageHelper.generateMessageId());
+
         try {
-            Object responseObj = taxiiClient.callTaxiiService(new URI(DISCOVERY_URL), request);
-            
-            if (responseObj instanceof DiscoveryResponse) {
-                DiscoveryResponse dResp = (DiscoveryResponse) responseObj;
-                processDiscoveryResponse(dResp);
+            Object responseObj = taxiiClient.callTaxiiService(new URI(DATA_URL), request);
+
+            if (responseObj instanceof CollectionInformationResponse) {
+                CollectionInformationResponse ciResp = (CollectionInformationResponse) responseObj;
+                processCollectionInformationResponse(ciResp);
             } else if (responseObj instanceof StatusMessage) {
                 StatusMessage sm = (StatusMessage) responseObj;
                 processStatusMessage(sm);
             }
         } catch (URISyntaxException | JAXBException | IOException ex) {
-            Logger.getLogger(DiscoveryClient.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CollectionInformationClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private static void processStatusMessage(StatusMessage sm) {
         printTaxiiXml(sm);
     }
-    
-    private static void processDiscoveryResponse(DiscoveryResponse dResp) {
-        printTaxiiXml(dResp);
+
+    private static void processCollectionInformationResponse(CollectionInformationResponse ciResp) {
+        printTaxiiXml(ciResp);
     }
-    
+
 }

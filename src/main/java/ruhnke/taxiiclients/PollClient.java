@@ -1,4 +1,4 @@
-package com.suprtek.taxiiclients;
+package ruhnke.taxiiclients;
 
 import java.io.IOException;
 import java.net.URI;

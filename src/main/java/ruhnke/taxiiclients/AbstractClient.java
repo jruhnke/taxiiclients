@@ -1,4 +1,4 @@
-package com.suprtek.taxiiclients;
+package ruhnke.taxiiclients;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
